@@ -24,4 +24,4 @@ build:
     - sherzberg/slack-notify:
         subdomain: colourful
         token: $SLACK_TOKEN
-        channel: work
+        channel: build-notifications
