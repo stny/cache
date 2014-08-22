@@ -13,13 +13,18 @@ type FileCacheSimple struct {
 	dir string
 }
 
-func NewFileCacheSimple(d string) *FileCacheSimple {
-	if _, err := os.Stat(d); os.IsNotExist(err) {
-		if err := os.Mkdir(d, 0755); err != nil {
-			panic(err)
-		}
+func NewFileCacheSimple(d string) (*FileCacheSimple, error) {
+	_, err := os.Stat(d)
+	if err == nil {
+		return &FileCacheSimple{dir: d}, nil
 	}
-	return &FileCacheSimple{dir: d}
+	if os.IsNotExist(err) {
+		if err := os.Mkdir(d, 0755); err != nil {
+			return nil, err
+		}
+		return &FileCacheSimple{dir: d}, nil
+	}
+	return nil, err
 }
 
 func (c *FileCacheSimple) Write(key, value string) error {
