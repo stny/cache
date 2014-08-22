@@ -14,6 +14,11 @@ type FileCacheSimple struct {
 }
 
 func NewFileCacheSimple(d string) *FileCacheSimple {
+	if _, err := os.Stat(d); os.IsNotExist(err) {
+		if err := os.Mkdir(d, 0755); err != nil {
+			panic(err)
+		}
+	}
 	return &FileCacheSimple{dir: d}
 }
 
